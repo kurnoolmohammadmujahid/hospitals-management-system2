@@ -1,0 +1,171 @@
+<div class="container-fluid" style="padding: 20px;">
+    <h1 style="text-align: center; text-decoration: underline;">Patient Receipt</h1>
+    <div class="row" style="margin-top: 40px;">
+        <div class="col-sm-3 col-md-3">
+            <p>Admission ID</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.admissionId}}</p>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <p>Name</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.patientName}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <p>Date & Time</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.admissionDate}} {{product.admissionTime}}</p>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <p>Phone</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.pNumber}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <p>Gender</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.gender}}</p>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <p>Age</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.age}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <p>Address</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.address}}</p>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <p>Symptoms</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.symptoms}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <p>Marrital Status</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.marritalStatus}}</p>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <p>Occupation</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.occupation}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <p>Doctor</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.doctor}}</p>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <p>Bed Number</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.bedNumber}}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <p>Status</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font">
+            <p>{{product.status}}</p>
+        </div>
+        <div class="col-sm-3 col-md-3" *ngIf="product.status == 'Discharged'">
+            <p>Payment</p>
+        </div>
+        <div class="col-sm-3 col-md-3 value-font" *ngIf="product.status == 'Discharged'">
+            <p>{{product.payment}}</p>
+        </div>
+    </div>
+    <div *ngIf="product.status == 'Discharged'">
+        <h4 style="text-align: center; text-decoration: underline;">Charges</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Doctors Charges</th>
+                    <th scope="col">Room Charges</th>
+                    <th scope="col">Hospital Charges</th>
+                    <th scope="col">Medical Charges</th>
+                    <th scope="col">Service Charges</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> {{product.charges &&
+                        product.charges[0].doctorsCharge?product.charges[0].doctorsCharge:'-'}} </td>
+                    <td> {{product.charges &&
+                        product.charges[0].roomCharge?product.charges[0].roomCharge:'-'}} </td>
+                    <td> {{product.charges &&
+                        product.charges[0].hospitalsCharge?product.charges[0].hospitalsCharge:'-'}} </td>
+                    <td> {{product.charges &&
+                        product.charges[0].medicalCharge?product.charges[0].medicalCharge:'-'}} </td>
+                    <td> {{product.charges &&
+                        product.charges[0].serviceCharge?product.charges[0].serviceCharge:'-'}} </td>
+                </tr>
+            </tbody>
+        </table>
+        <h4 style="text-align: center; text-decoration: underline;">Total Amount</h4>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th scope="row" colspan="3">Total Amount</th>
+                    <td>Rs. {{product.charges &&
+                        product.charges[0].totalAmount?product.charges[0].totalAmount:'-'}}</td>
+                </tr>
+                <tr>
+                    <th scope="row" colspan="3">Total Discount(%)</th>
+                    <td>{{product.charges &&
+                        product.charges[0].discount?product.charges[0].discount:'-'}} (%)</td>
+                </tr>
+                <tr>
+                    <th scope="row" colspan="3">Paid Amount</th>
+                    <td>Rs. {{product.charges &&
+                        product.charges[0].paidAmount?product.charges[0].paidAmount:'-'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="row" style="margin-top: 50px; text-align: center;">
+            <div class="col-sm-4 col-md-4">
+                <p class="footer-sign">Discharge Date & Time</p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <p class="footer-sign">Patient Signature</p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <p class="footer-sign">Hospital Incharge Signature</p>
+            </div>
+        </div>
+        <div class="row" style="text-align: center;">
+            <div class="col-sm-4 col-md-4 value-font">
+                <p>{{product.dischargeDateTime}}</p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <p></p>
+            </div>
+            <div class="col-sm-4 col-md-4">
+                <p></p>
+            </div>
+        </div>
+    </div>
+</div>

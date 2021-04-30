@@ -1,0 +1,269 @@
+<header>
+    <app-header></app-header>
+</header>
+
+<section>
+    <nav>
+        <app-layout></app-layout>
+    </nav>
+
+    <article>
+        <div class="card card-layout">
+            <div class="card-body card-bg">
+                <h2 class="card-titlev center">Patient's Admission Database</h2>
+                <!-- <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Admission ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Doctor</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Payment</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let admission of admissionLst"
+                                [ngClass]="{'discharge-status-color': admission.status == 'Discharged'}">
+                                <th scope="row">{{admission.admissionId}}</th>
+                                <td>{{admission.patientName}}</td>
+                                <td>{{admission.pNumber}}</td>
+                                <td>{{admission.doctor}}</td>
+                                <td>{{admission.status}}</td>
+                                <td>{{admission.payment}}</td>
+                                <td> <button (click)="showDialog(admission)" pButton pRipple type="button"
+                                        icon="pi pi-search" class="p-button-rounded p-button-success"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+                <p-table #dt2 [value]="admissionLst" dataKey="admissionId" [rows]="4" [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[4,8,10]" [paginator]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [globalFilterFields]="['patientName', 'product.patientName', 'pNumber', 'product.pNumber', 'status']">
+                    <ng-template pTemplate="caption">
+                        <div class="p-grid p-fluid">
+                            <span class="p-input-icon-left p-ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text"
+                                    (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Search by name or phone" />
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem"></th>
+                            <th>Admission ID
+                            </th>
+                            <th>Name
+                                <!-- <p-columnFilter type="text" field="name" display="menu"></p-columnFilter> -->
+                            </th>
+                            <th>Status
+                                <p-columnFilter field="status" matchMode="equals" display="menu">
+                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                        <p-dropdown [ngModel]="value" [options]="statuses"
+                                            (onChange)="filter($event.value)" placeholder="Any">
+                                            <ng-template let-option pTemplate="item">
+                                                <span [value]="option.value">{{option.label}}</span>
+                                            </ng-template>
+                                        </p-dropdown>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </th>
+                            <th>Phone
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product let-expanded="expanded">
+                        <tr>
+                            <td>
+                                <button type="button" pButton pRipple [pRowToggler]="product"
+                                    class="p-button-text p-button-rounded p-button-plain"
+                                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                            </td>
+                            <td>{{product.admissionId}}</td>
+                            <td>{{product.patientName}}</td>
+                            <td>{{product.status}}</td>
+                            <td>{{product.pNumber}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-product>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Admission ID: </td>
+                            <td class="bold">{{product.admissionId}}</td>
+                            <td>Name: </td>
+                            <td class="bold">{{product.patientName}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Date & Time: </td>
+                            <td class="bold">{{product.admissionDate}} {{product.admissionTime}}</td>
+                            <td>Gender: </td>
+                            <td class="bold">{{product.gender}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Age:</td>
+                            <td class="bold">{{product.age}}</td>
+                            <td>Address:</td>
+                            <td class="bold">{{product.address}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Symptoms:</td>
+                            <td class="bold">{{product.symptoms}}</td>
+                            <td>Phone Number:</td>
+                            <td class="bold">{{product.pNumber}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Marrital Status:</td>
+                            <td class="bold">{{product.marritalStatus}}</td>
+                            <td>Occupation:</td>
+                            <td class="bold">{{product.occupation}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Doctor:</td>
+                            <td class="bold">{{product.doctor}}</td>
+                            <td>Bed Number:</td>
+                            <td class="bold">{{product.bedNumber}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Status:</td>
+                            <td class="bold">{{product.status}}</td>
+                            <td>Payment:</td>
+                            <td class="bold">{{product.payment}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Doctors Charges:</td>
+                            <td class="bold">
+                                {{product.charges &&
+                                product.charges[0].doctorsCharge?product.charges[0].doctorsCharge:'-'}}
+                            </td>
+                            <td>Room Charges:</td>
+                            <td class="bold">
+                                {{product.charges &&
+                                product.charges[0].roomCharge?product.charges[0].roomCharge:'-'}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Hospital Charges:</td>
+                            <td class="bold">
+                                {{product.charges &&
+                                product.charges[0].hospitalsCharge?product.charges[0].hospitalsCharge:'-'}}</td>
+                            <td>Medical Charges:</td>
+                            <td class="bold">
+                                {{product.charges &&
+                                product.charges[0].medicalCharge?product.charges[0].medicalCharge:'-'}}
+                            </td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Service Charges:</td>
+                            <td class="bold">
+                                {{product.charges &&
+                                product.charges[0].serviceCharge?product.charges[0].serviceCharge:'-'}}
+                            </td>
+                            <td>Total Amount:</td>
+                            <td class="bold">
+                                {{product.charges &&
+                                product.charges[0].totalAmount?product.charges[0].totalAmount:'-'}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Discount(%):</td>
+                            <td class="bold">
+                                {{product.charges &&
+                                product.charges[0].discount?product.charges[0].discount:'-'}}</td>
+                            <td>Paid Amount:</td>
+                            <td class="bold">
+                                {{product.charges &&
+                                product.charges[0].paidAmount?product.charges[0].paidAmount:'-'}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Discharge Date & Time</td>
+                            <td class="bold">{{product.dischargeDateTime}}</td>
+                            <td><a [routerLink]="['/patient-management/print-admission',product.admissionId]"
+                                    class="btn btn-primary">
+                                    Print
+                                </a></td>
+                            <td class="bold"></td>
+                        </tr>
+
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="7">No data found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </article>
+</section>
+
+
+
+<p-dialog header="Patient's Data Detailed View" [(visible)]="display" [style]="{width: '70vw'}">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Admission ID</th>
+                <th scope="col">{{viewMoreDetailsObj.admissionId}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">{{viewMoreDetailsObj.patientName}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Date & Time</th>
+                <th scope="col">{{viewMoreDetailsObj.admissionDate}}{{viewMoreDetailsObj.admissionTime}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Gender</th>
+                <th scope="col">{{viewMoreDetailsObj.gender}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Age</th>
+                <th scope="col">{{viewMoreDetailsObj.age}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Address</th>
+                <th scope="col">{{viewMoreDetailsObj.address}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Symptoms</th>
+                <th scope="col">{{viewMoreDetailsObj.symptoms}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Phone Number</th>
+                <th scope="col">{{viewMoreDetailsObj.pNumber}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Marrital Status</th>
+                <th scope="col">{{viewMoreDetailsObj.marritalStatus}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Occupation</th>
+                <th scope="col">{{viewMoreDetailsObj.occupation}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Doctor</th>
+                <th scope="col">{{viewMoreDetailsObj.doctor}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Bed Number</th>
+                <th scope="col">{{viewMoreDetailsObj.bedNumber}}</th>
+            </tr>
+        </thead>
+    </table>
+</p-dialog>
