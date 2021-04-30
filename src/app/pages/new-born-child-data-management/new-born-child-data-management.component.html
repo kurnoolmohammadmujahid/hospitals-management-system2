@@ -1,0 +1,138 @@
+<header>
+    <app-header></app-header>
+</header>
+
+<section>
+    <nav>
+        <app-layout></app-layout>
+    </nav>
+    <article>
+        <div class="card card-layout">
+            <div class="card-body card-bg">
+                <h2 class="card-titlev center">New Born Child Database</h2>
+                <p-table [value]="products" dataKey="donorId">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem"></th>
+                            <th>New Born Child ID
+                            </th>
+                            <th>Name of Child
+                            </th>
+                            <th>Name of Father
+                            </th>
+                            <th>Date of Birth
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product let-expanded="expanded">
+                        <tr>
+                            <td>
+                                <button type="button" pButton pRipple [pRowToggler]="product"
+                                    class="p-button-text p-button-rounded p-button-plain"
+                                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                            </td>
+                            <td>{{product.childId}}</td>
+                            <td>{{product.nameOfChild}}</td>
+                            <td>{{product.nameOfFather}}</td>
+                            <td>{{product.dob}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-product>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>New Born Child ID: </td>
+                            <td class="bold">{{product.childId}}</td>
+                            <td>Name of Child: </td>
+                            <td class="bold">{{product.nameOfChild}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Name of Father: </td>
+                            <td class="bold">{{product.nameOfFather}}</td>
+                            <td>Date of Birth: </td>
+                            <td class="bold">{{product.dob}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Place of Birth:</td>
+                            <td class="bold">{{product.placeOfBirth}}</td>
+                            <td>Gender:</td>
+                            <td class="bold">{{product.gender}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Mother's Admission ID:</td>
+                            <td class="bold">{{product.motherAdmissionIdHospitals}}
+                                <span style="text-decoration: underline;color: blue;"
+                                    (click)="fetchAdmissionIDDetails(product.motherAdmissionIdHospitals)">View
+                                    Details</span>
+                            </td>
+                            <td>Parent's Permanent Address:</td>
+                            <td class="bold">{{product.parents_permanenet_address}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="7">No data found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </article>
+</section>
+
+<p-dialog header="Patient's Data Detailed View" [(visible)]="display" [style]="{width: '70vw'}">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Admission ID</th>
+                <th scope="col">{{viewMoreDetailsObj.admissionId}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">{{viewMoreDetailsObj.patientName}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Date & Time</th>
+                <th scope="col">{{viewMoreDetailsObj.admissionDate}}{{viewMoreDetailsObj.admissionTime}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Gender</th>
+                <th scope="col">{{viewMoreDetailsObj.gender}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Age</th>
+                <th scope="col">{{viewMoreDetailsObj.age}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Address</th>
+                <th scope="col">{{viewMoreDetailsObj.address}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Symptoms</th>
+                <th scope="col">{{viewMoreDetailsObj.symptoms}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Phone Number</th>
+                <th scope="col">{{viewMoreDetailsObj.pNumber}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Marrital Status</th>
+                <th scope="col">{{viewMoreDetailsObj.marritalStatus}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Occupation</th>
+                <th scope="col">{{viewMoreDetailsObj.occupation}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Doctor</th>
+                <th scope="col">{{viewMoreDetailsObj.doctor}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Bed Number</th>
+                <th scope="col">{{viewMoreDetailsObj.bedNumber}}</th>
+            </tr>
+        </thead>
+    </table>
+</p-dialog>

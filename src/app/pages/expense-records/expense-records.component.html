@@ -1,0 +1,169 @@
+<header>
+    <app-header></app-header>
+</header>
+
+<section>
+    <nav>
+        <app-layout></app-layout>
+    </nav>
+    <article>
+        <div class="card card-layout">
+            <div class="card-body card-bg">
+                <h2 class="card-titlev center">Hospital Expenses Database</h2>
+                <!-- <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Category</th>
+                                <th scope="col">OwnerShip Taken</th>
+                                <th scope="col">Date & Time</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let expense of expensesLst"
+                                [ngClass]="{'discharge-status-color': expense.status == 'Settled'}">
+                                <th scope="row">{{expense.expensesCategory}}</th>
+                                <td>{{expense.ownerShipTakenBy}}</td>
+                                <td>{{expense.dateTime}}</td>
+                                <td>{{expense.amount}}</td>
+                                <td>{{expense.status}}</td>
+                                <td> <button *ngIf="expense.status == 'Pending'" (click)="showDialog(expense)" pButton
+                                        pRipple type="button" icon="pi pi-search"
+                                        class="p-button-rounded p-button-success"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+                <p-table #dt2 [value]="expensesLst" dataKey="expensesCategory" [rows]="4" [showCurrentPageReport]="true"
+                    [rowsPerPageOptions]="[4,8,10]" [paginator]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                    [globalFilterFields]="['ownerShipTakenBy', 'product.ownerShipTakenBy', 'expensesCategory', 'product.expensesCategory', 'status']">
+                    <ng-template pTemplate="caption">
+                        <div class="p-grid p-fluid">
+                            <span class="p-input-icon-left p-ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text"
+                                    (input)="dt2.filterGlobal($event.target.value, 'contains')"
+                                    placeholder="Search by name" />
+                            </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 3rem"></th>
+                            <th>Category
+                            </th>
+                            <th>OwnerShip Taken
+                                <!-- <p-columnFilter type="text" field="name" display="menu"></p-columnFilter> -->
+                            </th>
+                            <th>Status
+                                <p-columnFilter field="status" matchMode="equals" display="menu">
+                                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                        <p-dropdown [ngModel]="value" [options]="statuses"
+                                            (onChange)="filter($event.value)" placeholder="Any">
+                                            <ng-template let-option pTemplate="item">
+                                                <span [value]="option.value">{{option.label}}</span>
+                                            </ng-template>
+                                        </p-dropdown>
+                                    </ng-template>
+                                </p-columnFilter>
+                            </th>
+                            <th>Date & Time
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product let-expanded="expanded">
+                        <tr>
+                            <td>
+                                <button type="button" pButton pRipple [pRowToggler]="product"
+                                    class="p-button-text p-button-rounded p-button-plain"
+                                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                            </td>
+                            <td>{{product.expensesCategory}}</td>
+                            <td>{{product.ownerShipTakenBy}}</td>
+                            <td>{{product.status}}</td>
+                            <td>{{product.dateTime}}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="rowexpansion" let-product>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Category: </td>
+                            <td class="bold">{{product.expensesCategory}}</td>
+                            <td>OwnerShip Taken: </td>
+                            <td class="bold">{{product.ownerShipTakenBy}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Status: </td>
+                            <td class="bold">{{product.status}}</td>
+                            <td>Date & Time: </td>
+                            <td class="bold">{{product.dateTime}}</td>
+                        </tr>
+                        <tr class="expand-font-size">
+                            <th style="width: 3rem"></th>
+                            <td>Amount:</td>
+                            <td class="bold">{{product.amount}}</td>
+                            <td>Comments:</td>
+                            <td class="bold">{{product.comments}}</td>
+                        </tr>
+                        <tr class="expand-font-size" *ngIf="product.status == 'Pending'">
+                            <th style="width: 3rem"></th>
+                            <td><a class="btn btn-primary" (click)="settled(product)">Mark As Settled</a></td>
+                            <td class="bold"></td>
+                            <td> </td>
+                            <td class="bold"></td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="7">No data found.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </article>
+</section>
+
+
+
+<p-dialog header="Expense's Data Detailed View" [(visible)]="display" [style]="{width: '70vw'}">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Category</th>
+                <th scope="col">{{viewMoreDetailsObj.expensesCategory}}</th>
+            </tr>
+            <tr>
+                <th scope="col">OwnerShip Taken By</th>
+                <th scope="col">{{viewMoreDetailsObj.ownerShipTakenBy}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Date & Time</th>
+                <th scope="col">{{viewMoreDetailsObj.dateTime}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Amount</th>
+                <th scope="col">{{viewMoreDetailsObj.amount}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Status</th>
+                <th scope="col">{{viewMoreDetailsObj.status}}</th>
+            </tr>
+            <tr>
+                <th scope="col">Comments</th>
+                <th scope="col">{{viewMoreDetailsObj.comments}}</th>
+            </tr>
+            <tr>
+                <th scope="col">
+                    <!-- <a class="btn btn-primary" (click)="settled()">Mark As Settled</a> -->
+                </th>
+            </tr>
+        </thead>
+    </table>
+</p-dialog>
